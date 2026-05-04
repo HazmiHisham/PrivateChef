@@ -1,15 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 const navItems = [
-  'about',
-  'services',
-  'menu',
-  'testimonials',
-  'experience',
-  'gallery',
-  'faq',
-  'contact',
+  { id: 'about', en: 'About', ms: 'Tentang' },
+  { id: 'services', en: 'Services', ms: 'Perkhidmatan' },
+  { id: 'menu', en: 'Menu', ms: 'Menu' },
+  { id: 'testimonials', en: 'Testimonials', ms: 'Testimoni' },
+  { id: 'experience', en: 'Experience', ms: 'Pengalaman' },
+  { id: 'gallery', en: 'Gallery', ms: 'Galeri' },
+  { id: 'faq', en: 'FAQ', ms: 'Soalan Lazim' },
+  { id: 'contact', en: 'Contact', ms: 'Hubungi' },
 ]
 
 const services = [
@@ -21,32 +21,120 @@ const services = [
   'Custom Requests',
 ]
 
+/** Malaysian-style menu — copy switches with EN / BM toggle */
 const dishes = [
   {
-    name: 'Truffle Seared Scallops',
-    category: 'Signature Starters',
+    category: { en: 'Heritage rice & sambal', ms: 'Nasi warisan & sambal' },
+    name: {
+      en: 'Nasi Lemak Ayam Berempah',
+      ms: 'Nasi Lemak Ayam Berempah',
+    },
     image:
-      'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80',
-    price: '$24',
-    description: 'Velvety cauliflower puree, brown butter, micro herbs.',
+      'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=80',
+    price: 'RM 38',
+    description: {
+      en: 'Coconut rice, house sambal tumis, ikan bilis & peanuts, cucumber, telur goreng, and spiced fried chicken.',
+      ms: 'Nasi lemak, sambal tumis buatan sendiri, ikan bilis & kacang, timun, telur goreng, dan ayam goreng berempah.',
+    },
   },
   {
-    name: 'Herb-Crusted Lamb',
-    category: 'Main Courses',
+    category: { en: 'Slow-cooked classics', ms: 'Klasik dimasak perlahan' },
+    name: {
+      en: 'Rendang Daging Lembu',
+      ms: 'Rendang Daging Lembu',
+    },
     image:
-      'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=900&q=80',
-    price: '$42',
-    description: 'Rosemary jus, roasted root vegetables, charred shallots.',
+      'https://images.unsplash.com/photo-1565557623262-b40e9eC5970b?auto=format&fit=crop&w=900&q=80',
+    price: 'RM 48',
+    description: {
+      en: 'Dry-style beef rendang with kerisik, coconut cream reduction, and aromatic Malay spices — served with ketupat or nasi minyak.',
+      ms: 'Rendang daging kering dengan kerisik, pekat santan, dan rempah ratus — dihidang dengan ketupat atau nasi minyak.',
+    },
   },
   {
-    name: 'Citrus Vanilla Tart',
-    category: 'Desserts',
+    category: { en: 'From the grill', ms: 'Dari pembakar' },
+    name: {
+      en: 'Satay Ayam & Daging',
+      ms: 'Satay Ayam & Daging',
+    },
     image:
-      'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=80',
-    price: '$16',
-    description: 'Lemon curd, vanilla cream, seasonal berries.',
+      'https://images.unsplash.com/photo-1529566652340-2c41cd1e6596?auto=format&fit=crop&w=900&q=80',
+    price: 'RM 42',
+    description: {
+      en: 'Charcoal-grilled skewers, kuah kacang, nasi impit, cucumber-onion acar — a mamak-night favourite, elevated.',
+      ms: 'Satay dibakar arang, kuah kacang, nasi impit, acar timun-bawang — rasa mamak, diperhalusi.',
+    },
+  },
+  {
+    category: { en: 'Noodle bowls', ms: 'Mangkuk mi' },
+    name: {
+      en: 'Laksa Lemak (Curry Laksa)',
+      ms: 'Laksa Lemak',
+    },
+    image:
+      'https://images.unsplash.com/photo-1617093727343-374928b6facd?auto=format&fit=crop&w=900&q=80',
+    price: 'RM 44',
+    description: {
+      en: 'Coconut curry broth, prawns, tofu pok, beansprouts, and egg — fragrant laksa leaves and lime on the side.',
+      ms: 'Kuah kari santan, udang, tauhu pok, taugeh, dan telur — daun kesum dan limau nipis di tepi.',
+    },
+  },
+  {
+    category: { en: 'Salads & kerabu', ms: 'Kerabu' },
+    name: {
+      en: 'Kerabu Pucuk Paku & Udang',
+      ms: 'Kerabu Pucuk Paku & Udang',
+    },
+    image:
+      'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=900&q=80',
+    price: 'RM 32',
+    description: {
+      en: 'Blanched fiddlehead fern, grilled prawns, toasted coconut kerisik, and a bright limau nipis dressing.',
+      ms: 'Pucuk paku celur, udang bakar, kerisik sangai, dan air limau nipis yang segar.',
+    },
+  },
+  {
+    category: { en: 'Sweet traditions', ms: 'Manisan tradisional' },
+    name: {
+      en: 'Sago Gula Melaka',
+      ms: 'Sago Gula Melaka',
+    },
+    image:
+      'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80',
+    price: 'RM 22',
+    description: {
+      en: 'Chilled pearl sago, gula Melaka syrup, and salted coconut cream — a gentle Malaysian dessert.',
+      ms: 'Sago mutiara sejuk, sirap gula Melaka, dan santan masin — pencuci mulut lembut.',
+    },
   },
 ]
+
+const uiCopy = {
+  en: {
+    bookNav: 'Book Consultation',
+    heroKicker: 'Luxury Private Dining',
+    heroTitle: 'Private Dining Experience Crafted Just For You',
+    heroSub:
+      'Bespoke menus, refined presentation, and personalized culinary experiences for homes, events, and executive gatherings.',
+    viewMenu: 'View Menu',
+    bookNow: 'Book Now',
+    menuTitle: 'Malaysian-inspired menu',
+    menuSub:
+      'Heritage flavours, halal-friendly options on request, and premium plating — swap dishes anytime for your event.',
+  },
+  ms: {
+    bookNav: 'Tempah Perundingan',
+    heroKicker: 'Makan Malam Peribadi Mewah',
+    heroTitle: 'Pengalaman Makan Malam Peribadi Dicipta Khas Untuk Anda',
+    heroSub:
+      'Menu khas, penyediaan kemas, dan pengalaman kulinari peribadi untuk rumah, acara, dan mesyuarat eksekutif.',
+    viewMenu: 'Lihat Menu',
+    bookNow: 'Tempah Sekarang',
+    menuTitle: 'Menu ilham Malaysia',
+    menuSub:
+      'Citarasa warisan, pilihan mesra halal atas permintaan, dan hidangan premium — tukar hidangan mengikut acara anda.',
+  },
+}
 
 const testimonials = [
   {
@@ -117,31 +205,74 @@ function Section({ id, title, subtitle, children }) {
   )
 }
 
+function LanguageToggle({ lang, onChange }) {
+  return (
+    <div
+      className="flex rounded-full border border-neutral-200 bg-neutral-50 p-0.5 text-xs font-semibold"
+      role="group"
+      aria-label="Language"
+    >
+      <button
+        type="button"
+        onClick={() => onChange('en')}
+        className={`rounded-full px-3 py-1.5 transition ${
+          lang === 'en'
+            ? 'bg-white text-neutral-900 shadow-sm'
+            : 'text-neutral-500 hover:text-neutral-800'
+        }`}
+      >
+        EN
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange('ms')}
+        className={`rounded-full px-3 py-1.5 transition ${
+          lang === 'ms'
+            ? 'bg-white text-neutral-900 shadow-sm'
+            : 'text-neutral-500 hover:text-neutral-800'
+        }`}
+      >
+        BM
+      </button>
+    </div>
+  )
+}
+
 function App() {
   const [openFaq, setOpenFaq] = useState(0)
+  const [lang, setLang] = useState('en')
+
+  useEffect(() => {
+    document.documentElement.lang = lang === 'ms' ? 'ms' : 'en'
+  }, [lang])
+
+  const t = uiCopy[lang]
 
   return (
     <div className="bg-white text-neutral-800">
       <header className="sticky top-0 z-40 border-b border-neutral-200/80 bg-white/90 backdrop-blur">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-8">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-4 md:px-8">
           <a href="#hero" className="text-lg font-semibold tracking-[0.16em] text-neutral-900">
             PRIVATE CHEF
           </a>
-          <ul className="hidden gap-6 text-sm capitalize text-neutral-600 lg:flex">
+          <ul className="hidden gap-5 text-sm text-neutral-600 lg:flex">
             {navItems.map((item) => (
-              <li key={item}>
-                <a href={`#${item}`} className="transition hover:text-amber-700">
-                  {item}
+              <li key={item.id}>
+                <a href={`#${item.id}`} className="transition hover:text-amber-700">
+                  {item[lang]}
                 </a>
               </li>
             ))}
           </ul>
-          <a
-            href="#contact"
-            className="rounded-full border border-neutral-900 px-4 py-2 text-sm font-medium transition hover:bg-neutral-900 hover:text-white"
-          >
-            Book Consultation
-          </a>
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <LanguageToggle lang={lang} onChange={setLang} />
+            <a
+              href="#contact"
+              className="rounded-full border border-neutral-900 px-3 py-2 text-center text-xs font-medium leading-tight transition hover:bg-neutral-900 hover:text-white sm:px-4 sm:text-sm"
+            >
+              {t.bookNav}
+            </a>
+          </div>
         </nav>
       </header>
 
@@ -164,27 +295,24 @@ function App() {
               transition={{ duration: 0.7 }}
             >
               <p className="text-xs font-semibold uppercase tracking-[0.33em] text-amber-200">
-                Luxury Private Dining
+                {t.heroKicker}
               </p>
               <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-6xl">
-                Private Dining Experience Crafted Just For You
+                {t.heroTitle}
               </h1>
-              <p className="mt-6 max-w-2xl text-base text-white/85 md:text-lg">
-                Bespoke menus, refined presentation, and personalized culinary experiences for
-                homes, events, and executive gatherings.
-              </p>
+              <p className="mt-6 max-w-2xl text-base text-white/85 md:text-lg">{t.heroSub}</p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <a
                   href="#menu"
                   className="rounded-full bg-amber-200 px-6 py-3 font-medium text-neutral-900 transition hover:scale-105 hover:bg-amber-100"
                 >
-                  View Menu
+                  {t.viewMenu}
                 </a>
                 <a
                   href="#contact"
                   className="rounded-full border border-white/70 px-6 py-3 font-medium transition hover:scale-105 hover:bg-white hover:text-neutral-900"
                 >
-                  Book Now
+                  {t.bookNow}
                 </a>
               </div>
             </motion.div>
@@ -243,24 +371,31 @@ function App() {
           </div>
         </Section>
 
-        <Section id="menu" title="Curated Menu Highlights">
-          <div className="grid gap-6 md:grid-cols-3">
+        <Section id="menu" title={t.menuTitle} subtitle={t.menuSub}>
+          <p className="mb-8 max-w-2xl text-sm text-neutral-500">
+            {lang === 'en'
+              ? 'Prices shown as a sample guide — final quotation follows your headcount and menu.'
+              : 'Harga sebagai panduan — sebut harga akhir mengikut bilangan tetamu dan menu.'}
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {dishes.map((dish) => (
               <article
-                key={dish.name}
+                key={dish.name.en}
                 className="overflow-hidden rounded-2xl border border-neutral-200 bg-white"
               >
                 <div className="overflow-hidden">
                   <img
                     src={dish.image}
-                    alt={dish.name}
+                    alt={dish.name[lang]}
                     className="h-56 w-full object-cover transition duration-500 hover:scale-110"
                   />
                 </div>
                 <div className="space-y-2 p-5">
-                  <p className="text-xs uppercase tracking-[0.2em] text-amber-700">{dish.category}</p>
-                  <h3 className="text-xl font-semibold text-neutral-900">{dish.name}</h3>
-                  <p className="text-sm text-neutral-600">{dish.description}</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-amber-700">
+                    {dish.category[lang]}
+                  </p>
+                  <h3 className="text-xl font-semibold text-neutral-900">{dish.name[lang]}</h3>
+                  <p className="text-sm text-neutral-600">{dish.description[lang]}</p>
                   <p className="pt-1 text-base font-semibold text-neutral-900">{dish.price}</p>
                 </div>
               </article>
