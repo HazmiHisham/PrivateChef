@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { BrandBackground } from './components/BrandBackground'
+import logoRantau from './assets/logo-rantau.png'
 
 const navItems = [
   { id: 'about', en: 'About', ms: 'Tentang' },
@@ -12,14 +14,42 @@ const navItems = [
   { id: 'contact', en: 'Contact', ms: 'Hubungi' },
 ]
 
-const services = [
-  'Private Dining',
-  'Event Catering',
-  'Meal Prep',
-  'Corporate Events',
-  'Wedding Events',
-  'Custom Requests',
+const rantauDifferentiators = [
+  'Private dining',
+  'Modern Malaysian cuisine',
+  'Signature mocktail pairing',
+  'Personal chef experience',
+  'Halal dining experience',
+  'Fresh ingredients',
 ]
+
+const experienceTimeline = [
+  'Booking',
+  'Menu discussion',
+  'Confirmation',
+  'Chef arrives',
+  'Private dining experience',
+  'Cleanup',
+]
+
+const bookingProcess = [
+  'Choose your preferred date',
+  'Submit your enquiry',
+  'Consultation',
+  '50% deposit',
+  'Booking confirmed',
+]
+
+const termsContent = {
+  reservation: [
+    '50% deposit required',
+    'Reservation confirmed only after deposit received',
+  ],
+  cancellation: [
+    'Deposit is non-refundable',
+    'One date reschedule allowed with minimum 7 days notice',
+  ],
+}
 
 /** Malaysian-style menu — copy switches with EN / BM toggle */
 const dishes = [
@@ -109,30 +139,89 @@ const dishes = [
   },
 ]
 
+const heroSlides = [
+  {
+    image:
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=80',
+    kicker: { en: 'A journey of Malaysian flavours.', ms: 'Satu perjalanan cita rasa Malaysia.' },
+    title: {
+      en: 'A journey of Malaysian flavours.',
+      ms: 'Satu perjalanan cita rasa Malaysia.',
+    },
+    sub: {
+      en: 'Rantau by chef haziq brings modern Malaysian cuisine into a private dining experience,carefully curated with seasonal ingredients ,refined techniques and personalised hospitality.',
+      ms: 'Rantau oleh Chef Haziq membawakan hidangan Malaysia moden ke dalam pengalaman menjamu selera yang eksklusif, yang disusun rapi menggunakan bahan-bahan bermusim, teknik penyediaan yang halus, serta layanan yang diperibadikan.',
+    },
+  },
+  {
+    image:
+      'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1800&q=80',
+    kicker: { en: 'A journey of Malaysian flavours.', ms: 'Satu perjalanan cita rasa Malaysia.' },
+    title: {
+      en: 'Unforgettable Gatherings, Beautifully Served',
+      ms: 'Perhimpunan Unik, Dihidang Dengan Indah',
+    },
+    sub: {
+      en: 'From corporate dinners to wedding celebrations — full-service catering with elegant plating and warm hospitality.',
+      ms: 'Daripada majlis korporat hingga perkahwinan — katering penuh dengan hidangan elegan dan layanan mesra.',
+    },
+  },
+  {
+    image:
+      'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=1800&q=80',
+    kicker: { en: 'A journey of Malaysian flavours.', ms: 'Satu perjalanan cita rasa Malaysia.' },
+    title: {
+      en: 'Authentic Malay Flavours, Refined for Today',
+      ms: 'Citarasa Melayu Asli, Diperhalusi untuk Kini',
+    },
+    sub: {
+      en: 'Nasi lemak, rendang, satay, and more — heritage recipes elevated with premium ingredients and modern presentation.',
+      ms: 'Nasi lemak, rendang, satay, dan lagi — resipi warisan diperhalusi dengan bahan premium dan penyediaan moden.',
+    },
+  },
+  {
+    image:
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=80',
+    kicker: { en: 'A journey of Malaysian flavours.', ms: 'Satu perjalanan cita rasa Malaysia.' },
+    title: {
+      en: 'Menus Tailored to Every Occasion',
+      ms: 'Menu Disesuaikan untuk Setiap Majlis',
+    },
+    sub: {
+      en: 'Halal-friendly options, dietary customisation, and tasting menus designed around your guests and your vision.',
+      ms: 'Pilihan mesra halal, penyesuaian diet, dan menu degustasi direka mengikut tetamu dan visi anda.',
+    },
+  },
+]
+
+const SLIDE_INTERVAL_MS = 5000
+
 const uiCopy = {
   en: {
-    bookNav: 'Book Consultation',
-    heroKicker: 'Luxury Private Dining',
-    heroTitle: 'Private Dining Experience Crafted Just For You',
+    bookNav: 'Booking',
+    heroKicker: 'A Journey of Malay Flavours',
+    heroTitle: 'Private Dining, Crafted With Heritage & Heart',
     heroSub:
-      'Bespoke menus, refined presentation, and personalized culinary experiences for homes, events, and executive gatherings.',
+      'Rantau by Chef Haziq brings refined Malay cuisine to your table — bespoke menus, elegant plating, and intimate dining for homes, celebrations, and executive gatherings.',
     viewMenu: 'View Menu',
     bookNow: 'Book Now',
     menuTitle: 'Malaysian-inspired menu',
     menuSub:
       'Heritage flavours, halal-friendly options on request, and premium plating — swap dishes anytime for your event.',
+    sectionKicker: 'Rantau',
   },
   ms: {
-    bookNav: 'Tempah Perundingan',
-    heroKicker: 'Makan Malam Peribadi Mewah',
-    heroTitle: 'Pengalaman Makan Malam Peribadi Dicipta Khas Untuk Anda',
+    bookNav: 'Tempahan',
+    heroKicker: 'Perjalanan Citarasa Melayu',
+    heroTitle: 'Makan Malam Peribadi, Dicipta Dengan Warisan & Kasih',
     heroSub:
-      'Menu khas, penyediaan kemas, dan pengalaman kulinari peribadi untuk rumah, acara, dan mesyuarat eksekutif.',
+      'Rantau by Chef Haziq membawa masakan Melayu yang halus ke meja anda — menu khas, hidangan elegan, dan pengalaman makan malam peribadi untuk rumah, sambutan, dan mesyuarat eksekutif.',
     viewMenu: 'Lihat Menu',
     bookNow: 'Tempah Sekarang',
     menuTitle: 'Menu ilham Malaysia',
     menuSub:
       'Citarasa warisan, pilihan mesra halal atas permintaan, dan hidangan premium — tukar hidangan mengikut acara anda.',
+    sectionKicker: 'Rantau',
   },
 }
 
@@ -181,7 +270,35 @@ const reveal = {
   show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: 'easeOut' } },
 }
 
-function Section({ id, title, subtitle, children }) {
+function BulletList({ items }) {
+  return (
+    <ul className="space-y-3">
+      {items.map((item) => (
+        <li key={item} className="flex gap-3 text-neutral-400">
+          <span className="mt-0.5 shrink-0 text-rantau-gold">—</span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function StepList({ items }) {
+  return (
+    <ol className="space-y-4">
+      {items.map((item, index) => (
+        <li key={item} className="flex gap-4">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#c4a35a]/40 bg-[#1a1816]/80 text-sm font-semibold text-rantau-gold">
+            {index + 1}
+          </span>
+          <span className="pt-1 text-neutral-400">{item}</span>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+function Section({ id, title, subtitle, children, kicker = 'Rantau' }) {
   return (
     <motion.section
       id={id}
@@ -192,23 +309,130 @@ function Section({ id, title, subtitle, children }) {
       viewport={{ once: true, amount: 0.2 }}
     >
       <div className="mb-10">
-        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-700">
-          Private Chef
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-rantau-gold">
+          {kicker}
         </p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
+        <h2 className="font-brand mt-3 text-3xl font-semibold tracking-tight text-[#f5eed8] md:text-4xl">
           {title}
         </h2>
-        {subtitle && <p className="mt-3 max-w-2xl text-neutral-600">{subtitle}</p>}
+        {subtitle && (
+          <p className="mt-3 max-w-full text-justify text-neutral-400">{subtitle}</p>
+        )}
       </div>
       {children}
     </motion.section>
   )
 }
 
-function LanguageToggle({ lang, onChange }) {
+function HeroSection({ lang, t }) {
+  const [activeSlide, setActiveSlide] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % heroSlides.length)
+    }, SLIDE_INTERVAL_MS)
+    return () => clearInterval(timer)
+  }, [])
+
+  const slide = heroSlides[activeSlide]
+
+  return (
+    <section id="hero" className="relative min-h-[92vh] overflow-hidden border-b border-[#c4a35a]/20">
+      {heroSlides.map((item, index) => (
+        <motion.img
+          key={item.image}
+          src={item.image}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+          animate={{
+            opacity: activeSlide === index ? 1 : 0,
+            scale: activeSlide === index ? 1 : 1.05,
+          }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
+        />
+      ))}
+      <div className="absolute inset-0 bg-[#121110]/20" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#121110]/90 via-[#121110]/60 to-[#121110]/80" />
+
+      <div className="relative mx-auto flex min-h-[92vh] max-w-6xl flex-col items-center justify-center gap-10 px-5 py-20 md:flex-row md:gap-16 md:px-8">
+        <motion.div
+          className="shrink-0"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <img
+            src={logoRantau}
+            alt="Rantau by Chef Haziq — A Journey of Malay Flavours, Private Dining"
+            className="mx-auto w-[min(88vw,340px)] drop-shadow-[0_8px_32px_rgba(196,163,90,0.25)] md:w-[380px]"
+          />
+        </motion.div>
+
+        <div className="max-w-xl text-center md:text-left">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeSlide}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.55, ease: 'easeOut' }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.33em] text-[#e8d4a8]">
+                {slide.kicker[lang]}
+              </p>
+              <h1 className="font-brand mt-4 text-4xl font-semibold leading-tight text-white md:text-5xl">
+                {slide.title[lang]}
+              </h1>
+              <p className="mt-6 text-base text-white/80 md:text-lg">{slide.sub[lang]}</p>
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="mt-8 flex flex-wrap justify-center gap-4 md:justify-start">
+            <a
+              href="#menu"
+              className="rounded-full bg-rantau-gold px-6 py-3 font-medium text-neutral-900 transition hover:scale-105 hover:bg-[#e8d4a8]"
+            >
+              {t.viewMenu}
+            </a>
+            <a
+              href="#contact"
+              className="rounded-full border border-[#c4a35a]/70 px-6 py-3 font-medium text-[#e8d4a8] transition hover:scale-105 hover:bg-[#c4a35a]/15"
+            >
+              {t.bookNow}
+            </a>
+          </div>
+
+          <div className="mt-10 flex items-center justify-center gap-2 md:justify-start">
+            {heroSlides.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                aria-label={`Go to slide ${index + 1}`}
+                aria-current={activeSlide === index ? 'true' : undefined}
+                onClick={() => setActiveSlide(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  activeSlide === index
+                    ? 'w-8 bg-rantau-gold'
+                    : 'w-2 bg-white/35 hover:bg-white/55'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function LanguageToggle({ lang, onChange, dark = false }) {
   return (
     <div
-      className="flex rounded-full border border-neutral-200 bg-neutral-50 p-0.5 text-xs font-semibold"
+      className={`flex rounded-full border p-0.5 text-xs font-semibold ${
+        dark
+          ? 'border-[#c4a35a]/30 bg-neutral-900/60'
+          : 'border-neutral-200 bg-neutral-50'
+      }`}
       role="group"
       aria-label="Language"
     >
@@ -217,8 +441,12 @@ function LanguageToggle({ lang, onChange }) {
         onClick={() => onChange('en')}
         className={`rounded-full px-3 py-1.5 transition ${
           lang === 'en'
-            ? 'bg-white text-neutral-900 shadow-sm'
-            : 'text-neutral-500 hover:text-neutral-800'
+            ? dark
+              ? 'bg-rantau-gold text-neutral-900 shadow-sm'
+              : 'bg-white text-neutral-900 shadow-sm'
+            : dark
+              ? 'text-neutral-400 hover:text-[#e8d4a8]'
+              : 'text-neutral-500 hover:text-neutral-800'
         }`}
       >
         EN
@@ -228,8 +456,12 @@ function LanguageToggle({ lang, onChange }) {
         onClick={() => onChange('ms')}
         className={`rounded-full px-3 py-1.5 transition ${
           lang === 'ms'
-            ? 'bg-white text-neutral-900 shadow-sm'
-            : 'text-neutral-500 hover:text-neutral-800'
+            ? dark
+              ? 'bg-rantau-gold text-neutral-900 shadow-sm'
+              : 'bg-white text-neutral-900 shadow-sm'
+            : dark
+              ? 'text-neutral-400 hover:text-[#e8d4a8]'
+              : 'text-neutral-500 hover:text-neutral-800'
         }`}
       >
         BM
@@ -249,26 +481,33 @@ function App() {
   const t = uiCopy[lang]
 
   return (
-    <div className="bg-white text-neutral-800">
-      <header className="sticky top-0 z-40 border-b border-neutral-200/80 bg-white/90 backdrop-blur">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-4 md:px-8">
-          <a href="#hero" className="text-lg font-semibold tracking-[0.16em] text-neutral-900">
-            PRIVATE CHEF
+    <BrandBackground className="min-h-screen text-neutral-300">
+      <header className="sticky top-0 z-40 border-b border-[#c4a35a]/20 bg-[#121110]/80 backdrop-blur-md">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3 md:px-8">
+          <a href="#hero" className="flex shrink-0 items-center gap-3">
+            <img
+              src={logoRantau}
+              alt="Rantau by Chef Haziq"
+              className="h-12 w-12 rounded-sm object-cover md:h-14 md:w-14"
+            />
+            <span className="hidden font-brand text-lg font-semibold tracking-[0.12em] text-[#e8d4a8] sm:block">
+              RANTAU
+            </span>
           </a>
-          <ul className="hidden gap-5 text-sm text-neutral-600 lg:flex">
+          <ul className="hidden gap-5 text-sm text-neutral-300 lg:flex">
             {navItems.map((item) => (
               <li key={item.id}>
-                <a href={`#${item.id}`} className="transition hover:text-amber-700">
+                <a href={`#${item.id}`} className="transition hover:text-rantau-gold">
                   {item[lang]}
                 </a>
               </li>
             ))}
           </ul>
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <LanguageToggle lang={lang} onChange={setLang} />
+            <LanguageToggle lang={lang} onChange={setLang} dark />
             <a
               href="#contact"
-              className="rounded-full border border-neutral-900 px-3 py-2 text-center text-xs font-medium leading-tight transition hover:bg-neutral-900 hover:text-white sm:px-4 sm:text-sm"
+              className="rounded-full border border-rantau-gold px-3 py-2 text-center text-xs font-medium leading-tight text-[#e8d4a8] transition hover:bg-rantau-gold hover:text-neutral-900 sm:px-4 sm:text-sm"
             >
               {t.bookNav}
             </a>
@@ -277,101 +516,92 @@ function App() {
       </header>
 
       <main>
-        <section
-          id="hero"
-          className="relative min-h-[90vh] overflow-hidden border-b border-neutral-100"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=80"
-            alt="Elegant dining table with gourmet dishes"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/55" />
-          <div className="relative mx-auto flex min-h-[90vh] max-w-6xl items-center px-5 py-20 md:px-8">
-            <motion.div
-              className="max-w-3xl text-white"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.33em] text-amber-200">
-                {t.heroKicker}
-              </p>
-              <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-6xl">
-                {t.heroTitle}
-              </h1>
-              <p className="mt-6 max-w-2xl text-base text-white/85 md:text-lg">{t.heroSub}</p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a
-                  href="#menu"
-                  className="rounded-full bg-amber-200 px-6 py-3 font-medium text-neutral-900 transition hover:scale-105 hover:bg-amber-100"
-                >
-                  {t.viewMenu}
-                </a>
-                <a
-                  href="#contact"
-                  className="rounded-full border border-white/70 px-6 py-3 font-medium transition hover:scale-105 hover:bg-white hover:text-neutral-900"
-                >
-                  {t.bookNow}
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+        <HeroSection lang={lang} t={t} />
 
         <Section
           id="about"
-          title="Meet Chef Adam Laurent"
-          subtitle="A private chef dedicated to intimate, memorable dining with seasonal ingredients and globally inspired techniques."
+          kicker={t.sectionKicker}
+          title="About Chef Haziq"
+          subtitle="Chef Haziq began his culinary journey in some of Malaysia’s most demanding professional kitchens, including luxury five-star hotels and a Michelin restaurant. These experiences shaped his discipline, attention to detail, and appreciation for refined dining. Driven by a passion for Malaysian cuisine, he founded Rantau to present familiar local flavours through a contemporary lens. Each menu is carefully curated to honour tradition while embracing modern techniques, allowing every guest to experience Malaysia in a new and memorable way.
+                    Every dinner is personally planned, prepared, and presented by Chef Haziq, ensuring an intimate dining experience where every course reflects craftsmanship, hospitality, and the rich diversity of Malaysian flavours."
         >
           <div className="grid items-center gap-8 md:grid-cols-2">
             <img
               src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?auto=format&fit=crop&w=1000&q=80"
-              alt="Private chef portrait in kitchen"
+              alt="Chef Haziq in the kitchen"
               className="h-[420px] w-full rounded-2xl object-cover transition duration-300 hover:scale-[1.02]"
             />
-            <div className="space-y-4 text-neutral-600">
+            <div className="space-y-4 text-neutral-400">
               <p>
-                With over 12 years in fine dining kitchens, Chef Adam creates personalized menus
-                that blend modern European techniques with Southeast Asian flavors.
+                Chef Haziq crafts personalized menus that honour traditional Malay flavours while
+                elevating every plate with modern presentation and premium ingredients.
               </p>
               <p>
-                Specialties include tasting menus, live chef tables, and elegant plated service for
-                private residences and exclusive events.
+                From private residences to exclusive celebrations, Rantau delivers tasting menus,
+                live chef tables, and elegant plated service — a journey of Malay flavours, made
+                personal.
               </p>
               <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="rounded-xl border border-neutral-200 p-4">
+                <div className="rounded-xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-4 backdrop-blur-sm">
                   <p className="text-sm text-neutral-500">Experience</p>
-                  <p className="text-xl font-semibold text-neutral-900">12+ Years</p>
+                  <p className="text-xl font-semibold text-[#f5eed8]">12+ Years</p>
                 </div>
-                <div className="rounded-xl border border-neutral-200 p-4">
+                <div className="rounded-xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-4 backdrop-blur-sm">
                   <p className="text-sm text-neutral-500">Cuisine Focus</p>
-                  <p className="text-xl font-semibold text-neutral-900">Modern Fusion</p>
+                  <p className="text-xl font-semibold text-[#f5eed8]">Malay Heritage</p>
                 </div>
               </div>
             </div>
           </div>
         </Section>
 
-        <Section id="services" title="Signature Services">
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
+        <Section id="services" kicker={t.sectionKicker} title="What Makes Rantau Different">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {rantauDifferentiators.map((item) => (
               <motion.article
-                key={service}
-                className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-md"
-                whileHover={{ y: -4 }}
+                key={item}
+                className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-5 backdrop-blur-sm transition hover:border-rantau-gold"
+                whileHover={{ y: -2 }}
               >
-                <h3 className="text-xl font-semibold text-neutral-900">{service}</h3>
-                <p className="mt-2 text-sm text-neutral-600">
-                  Bespoke menu planning, premium ingredients, and elevated service tailored to your
-                  occasion.
-                </p>
+                <div className="flex items-start gap-3">
+                  <span className="text-rantau-gold">—</span>
+                  <h3 className="text-lg font-semibold text-[#f5eed8]">{item}</h3>
+                </div>
               </motion.article>
             ))}
           </div>
         </Section>
 
-        <Section id="menu" title={t.menuTitle} subtitle={t.menuSub}>
+        <Section id="timeline" kicker={t.sectionKicker} title="The Timeline">
+          <div className="max-w-xl">
+            <StepList items={experienceTimeline} />
+          </div>
+        </Section>
+
+        <Section id="booking" kicker={t.sectionKicker} title="Booking Process">
+          <div className="max-w-xl">
+            <StepList items={bookingProcess} />
+          </div>
+        </Section>
+
+        <Section id="terms" kicker={t.sectionKicker} title="Terms & Conditions">
+          <div className="grid gap-6 md:grid-cols-2">
+            <article className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm">
+              <h3 className="text-xl font-semibold text-[#f5eed8]">Reservation</h3>
+              <div className="mt-4">
+                <BulletList items={termsContent.reservation} />
+              </div>
+            </article>
+            <article className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm">
+              <h3 className="text-xl font-semibold text-[#f5eed8]">Cancellation</h3>
+              <div className="mt-4">
+                <BulletList items={termsContent.cancellation} />
+              </div>
+            </article>
+          </div>
+        </Section>
+
+        <Section id="menu" kicker={t.sectionKicker} title={t.menuTitle} subtitle={t.menuSub}>
           <p className="mb-8 max-w-2xl text-sm text-neutral-500">
             {lang === 'en'
               ? 'Prices shown as a sample guide — final quotation follows your headcount and menu.'
@@ -381,7 +611,7 @@ function App() {
             {dishes.map((dish) => (
               <article
                 key={dish.name.en}
-                className="overflow-hidden rounded-2xl border border-neutral-200 bg-white"
+                className="overflow-hidden rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 backdrop-blur-sm"
               >
                 <div className="overflow-hidden">
                   <img
@@ -391,23 +621,23 @@ function App() {
                   />
                 </div>
                 <div className="space-y-2 p-5">
-                  <p className="text-xs uppercase tracking-[0.2em] text-amber-700">
+                  <p className="text-xs uppercase tracking-[0.2em] text-rantau-gold">
                     {dish.category[lang]}
                   </p>
-                  <h3 className="text-xl font-semibold text-neutral-900">{dish.name[lang]}</h3>
-                  <p className="text-sm text-neutral-600">{dish.description[lang]}</p>
-                  <p className="pt-1 text-base font-semibold text-neutral-900">{dish.price}</p>
+                  <h3 className="text-xl font-semibold text-[#f5eed8]">{dish.name[lang]}</h3>
+                  <p className="text-sm text-neutral-400">{dish.description[lang]}</p>
+                  <p className="pt-1 text-base font-semibold text-rantau-gold">{dish.price}</p>
                 </div>
               </article>
             ))}
           </div>
         </Section>
 
-        <Section id="testimonials" title="Trusted by Premium Clients">
+        <Section id="testimonials" kicker={t.sectionKicker} title="Trusted by Premium Clients">
           <div className="mb-8 flex flex-wrap gap-3 text-sm text-neutral-500">
             {['Aurelia Hotels', 'Nexa Group', 'The Ashford Family Office', 'Lumiere Events'].map(
               (client) => (
-                <span key={client} className="rounded-full border border-neutral-200 px-4 py-2">
+                <span key={client} className="rounded-full border border-[#c4a35a]/30 bg-[#1a1816]/50 px-4 py-2 text-neutral-400">
                   {client}
                 </span>
               ),
@@ -415,27 +645,27 @@ function App() {
           </div>
           <div className="grid gap-5 md:grid-cols-3">
             {testimonials.map((item) => (
-              <article key={item.name} className="rounded-2xl border border-neutral-200 p-6">
-                <p className="text-amber-600">★★★★★</p>
-                <p className="mt-3 text-neutral-600">{item.review}</p>
-                <p className="mt-4 text-sm font-semibold text-neutral-900">{item.name}</p>
+              <article key={item.name} className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm">
+                <p className="text-rantau-gold">★★★★★</p>
+                <p className="mt-3 text-neutral-400">{item.review}</p>
+                <p className="mt-4 text-sm font-semibold text-[#f5eed8]">{item.name}</p>
               </article>
             ))}
           </div>
         </Section>
 
-        <Section id="experience" title="Experience & Achievements">
+        <Section id="experience" kicker={t.sectionKicker} title="Experience & Achievements">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-neutral-200 p-6 text-center">
-                <p className="text-4xl font-semibold text-neutral-900">{stat.value}</p>
-                <p className="mt-2 text-sm text-neutral-600">{stat.label}</p>
+              <div key={stat.label} className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 text-center backdrop-blur-sm">
+                <p className="text-4xl font-semibold text-rantau-gold">{stat.value}</p>
+                <p className="mt-2 text-sm text-neutral-400">{stat.label}</p>
               </div>
             ))}
           </div>
         </Section>
 
-        <Section id="gallery" title="Gallery">
+        <Section id="gallery" kicker={t.sectionKicker} title="Gallery">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
               'photo-1498837167922-ddd27525d352',
@@ -458,43 +688,43 @@ function App() {
           </div>
         </Section>
 
-        <Section id="faq" title="Frequently Asked Questions">
+        <Section id="faq" kicker={t.sectionKicker} title="Frequently Asked Questions">
           <div className="space-y-3">
             {faqs.map((faq, index) => (
-              <article key={faq.q} className="rounded-xl border border-neutral-200">
+              <article key={faq.q} className="rounded-xl border border-[#c4a35a]/25 bg-[#1a1816]/70 backdrop-blur-sm">
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
                   className="flex w-full items-center justify-between px-5 py-4 text-left"
                 >
-                  <span className="font-medium text-neutral-900">{faq.q}</span>
-                  <span className="text-amber-700">{openFaq === index ? '−' : '+'}</span>
+                  <span className="font-medium text-[#f5eed8]">{faq.q}</span>
+                  <span className="text-rantau-gold">{openFaq === index ? '−' : '+'}</span>
                 </button>
                 {openFaq === index && (
-                  <p className="px-5 pb-4 text-sm text-neutral-600">{faq.a}</p>
+                  <p className="px-5 pb-4 text-sm text-neutral-400">{faq.a}</p>
                 )}
               </article>
             ))}
           </div>
         </Section>
 
-        <Section id="contact" title="Let’s Craft Your Next Event">
-          <div className="grid gap-6 rounded-2xl border border-neutral-200 p-6 md:grid-cols-2 md:p-8">
+        <Section id="contact" kicker={t.sectionKicker} title="Let’s Craft Your Next Event">
+          <div className="grid gap-6 rounded-2xl border border-[#c4a35a]/30 bg-[#1a1816]/80 p-6 backdrop-blur-sm md:grid-cols-2 md:p-8">
             <div>
-              <h3 className="text-2xl font-semibold text-neutral-900">Direct Contact</h3>
-              <p className="mt-3 text-neutral-600">
-                Connect directly for menu consultation, availability, and custom requests.
+              <h3 className="text-2xl font-semibold text-[#f5eed8]">Direct Contact</h3>
+              <p className="mt-3 text-neutral-400">
+                Connect directly with Rantau for menu consultation, availability, and custom requests.
               </p>
-              <div className="mt-6 space-y-2 text-neutral-700">
-                <p>Email: hello@privatechef.example</p>
+              <div className="mt-6 space-y-2 text-neutral-300">
+                <p>Email: hello@rantau.my</p>
                 <p>Phone: +60 12-345 6789</p>
                 <a
-                  className="block text-amber-700 transition hover:text-amber-800"
+                  className="block text-rantau-gold transition hover:text-[#9a7b3c]"
                   href="https://instagram.com"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Instagram: @privatechef
+                  Instagram: @rantau.by.chefhaziq
                 </a>
               </div>
             </div>
@@ -521,23 +751,28 @@ function App() {
         WhatsApp
       </a>
 
-      <footer className="border-t border-neutral-200">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-8 text-sm text-neutral-600 md:flex-row md:items-center md:justify-between md:px-8">
-          <p>© {new Date().getFullYear()} Private Chef. All rights reserved.</p>
-          <div className="flex gap-4">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-amber-700">
+      <footer className="border-t border-[#c4a35a]/20">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 md:flex-row md:items-center md:justify-between md:px-8">
+          <div className="flex items-center gap-3">
+            <img src={logoRantau} alt="" className="h-10 w-10 rounded-sm object-cover opacity-90" aria-hidden="true" />
+            <p className="text-sm text-neutral-400">
+              © {new Date().getFullYear()} Rantau by Chef Haziq. All rights reserved.
+            </p>
+          </div>
+          <div className="flex gap-4 text-sm text-neutral-400">
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-rantau-gold">
               Instagram
             </a>
-            <a href="https://wa.me/60123456789" target="_blank" rel="noreferrer" className="hover:text-amber-700">
+            <a href="https://wa.me/60123456789" target="_blank" rel="noreferrer" className="hover:text-rantau-gold">
               WhatsApp
             </a>
-            <a href="mailto:hello@privatechef.example" className="hover:text-amber-700">
+            <a href="mailto:hello@rantau.my" className="hover:text-rantau-gold">
               Email
             </a>
           </div>
         </div>
       </footer>
-    </div>
+    </BrandBackground>
   )
 }
 

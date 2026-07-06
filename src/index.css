@@ -1,4 +1,13 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --rantau-gold: #c4a35a;
+  --rantau-gold-light: #e8d4a8;
+  --rantau-gold-dark: #9a7b3c;
+  --rantau-charcoal: #121110;
+  --rantau-charcoal-light: #1c1917;
+}
 
 html {
   scroll-behavior: smooth;
@@ -7,6 +16,56 @@ html {
 body {
   margin: 0;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
-  color: #262626;
-  background-color: #ffffff;
+  color: #d4d4d4;
+  background-color: var(--rantau-charcoal);
+}
+
+.font-brand {
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+}
+
+/* Poster-inspired hero / section background */
+.rantau-bg {
+  background-color: var(--rantau-charcoal);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 45%, #1f1b18 0%, var(--rantau-charcoal) 70%);
+}
+
+.rantau-bg__texture {
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+.rantau-bg__glow {
+  background: radial-gradient(
+    ellipse 50% 40% at 50% 50%,
+    rgba(196, 163, 90, 0.08) 0%,
+    transparent 70%
+  );
+}
+
+.rantau-bg__corner {
+  color: var(--rantau-gold);
+  opacity: 0.85;
+}
+
+.text-rantau-gold {
+  color: var(--rantau-gold);
+}
+
+.bg-rantau-gold {
+  background-color: var(--rantau-gold);
+}
+
+.border-rantau-gold {
+  border-color: var(--rantau-gold);
+}
+
+.hover\:text-rantau-gold:hover {
+  color: var(--rantau-gold);
+}
+
+.hover\:bg-rantau-gold:hover {
+  background-color: var(--rantau-gold);
 }
