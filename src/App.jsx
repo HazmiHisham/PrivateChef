@@ -7,6 +7,8 @@ import dessert1 from './assets/dessert-1.PNG'
 import dessert3 from './assets/dessert-3.jpg'
 import dessert2 from './assets/dessert-2.PNG'
 import dessert4 from './assets/dessert-4.PNG'
+import menu from  './assets/menucard.png'
+
 
 const BACKGROUND_MUSIC = '/song/Instrumental Music.m4a'
 
@@ -115,6 +117,10 @@ const galleryImages = [
     src: dessert4,
     alt: { en: 'Rantau dessert detail', ms: 'Perincian pencuci mulut Rantau' },
   },
+  {
+    src: menu,
+    alt: { en: 'Rantau dessert detail', ms: 'Perincian pencuci mulut Rantau' },
+  },
 ]
 
 const clientVideos = [
@@ -155,6 +161,7 @@ const heroSlideImages = [
   'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=80',
   'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1800&q=80',
   '/dessert-3.PNG',
+  '/menu.png',
   'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=80',
 ]
 
@@ -396,9 +403,21 @@ const stats = [
   { label: 'Awards', value: '9' },
 ]
 
-const reveal = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: 'easeOut' } },
+const sectionReveal = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.14, delayChildren: 0.06 },
+  },
+}
+
+const sectionItem = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+  },
 }
 
 function buildWhatsAppUrl(message) {
@@ -900,12 +919,12 @@ function Section({ id, title, subtitle, children, kicker = 'Rantau' }) {
     <motion.section
       id={id}
       className="mx-auto w-full max-w-6xl px-5 py-20 md:px-8"
-      variants={reveal}
+      variants={sectionReveal}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: false, amount: 0.15, margin: '0px 0px -60px 0px' }}
     >
-      <div className="mb-10">
+      <motion.div className="mb-10" variants={sectionItem}>
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-rantau-gold">
           {kicker}
         </p>
@@ -915,8 +934,8 @@ function Section({ id, title, subtitle, children, kicker = 'Rantau' }) {
         {subtitle && (
           <p className="mt-3 max-w-full text-justify text-neutral-400">{subtitle}</p>
         )}
-      </div>
-      {children}
+      </motion.div>
+      <motion.div variants={sectionItem}>{children}</motion.div>
     </motion.section>
   )
 }
@@ -1331,10 +1350,15 @@ function App() {
 
         <Section id="services" kicker={t.sectionKicker} title={t.servicesTitle}>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {rantauDifferentiators.map((item) => (
+            {rantauDifferentiators.map((item, index) => (
               <motion.article
                 key={item.en}
                 className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-5 backdrop-blur-sm transition hover:border-rantau-gold"
+                variants={sectionItem}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ delay: index * 0.08 }}
                 whileHover={{ y: -2 }}
               >
                 <div className="flex items-start gap-3">
@@ -1377,14 +1401,22 @@ function App() {
 
         <Section id="gallery" kicker={t.sectionKicker} title={t.galleryTitle}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {galleryImages.map((image) => (
-              <div key={image.alt.en} className="overflow-hidden rounded-xl border border-[#c4a35a]/20">
+            {galleryImages.map((image, index) => (
+              <motion.div
+                key={image.alt.en}
+                className="overflow-hidden rounded-xl border border-[#c4a35a]/20"
+                variants={sectionItem}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ delay: index * 0.08 }}
+              >
                 <img
                   src={image.src}
                   alt={pick(image.alt, lang)}
                   className="h-56 w-full object-cover transition duration-500 hover:scale-110 md:h-72"
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -1407,26 +1439,6 @@ function App() {
               </p>
             </article>
           </div>
-          <Section id="testimonials" kicker={t.sectionKicker} title={t.testimonialsTitle}>
-          <div className="mb-8 flex flex-wrap gap-3 text-sm text-neutral-500">
-            {['Aurelia Hotels', 'Nexa Group', 'The Ashford Family Office', 'Lumiere Events'].map(
-              (client) => (
-                <span key={client} className="rounded-full border border-[#c4a35a]/30 bg-[#1a1816]/50 px-4 py-2 text-neutral-400">
-                  {client}
-                </span>
-              ),
-            )}
-          </div>
-          <div className="grid gap-5 md:grid-cols-3">
-            {testimonials.map((item) => (
-              <article key={item.name} className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm">
-                <p className="text-rantau-gold">★★★★★</p>
-                <p className="mt-3 text-neutral-400">{pick(item.review, lang)}</p>
-                <p className="mt-4 text-sm font-semibold text-[#f5eed8]">{item.name}</p>
-              </article>
-            ))}
-          </div>
-        </Section>
 
           <div className="mt-12">
             <h3 className="text-xl font-semibold text-[#f5eed8]">{t.galleryVideosTitle}</h3>
@@ -1443,12 +1455,48 @@ function App() {
             />
           </div>
         </Section>
-        
+
+        <Section id="testimonials" kicker={t.sectionKicker} title={t.testimonialsTitle}>
+          <div className="mb-8 flex flex-wrap gap-3 text-sm text-neutral-500">
+            {['Aurelia Hotels', 'Nexa Group', 'The Ashford Family Office', 'Lumiere Events'].map(
+              (client) => (
+                <span key={client} className="rounded-full border border-[#c4a35a]/30 bg-[#1a1816]/50 px-4 py-2 text-neutral-400">
+                  {client}
+                </span>
+              ),
+            )}
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {testimonials.map((item, index) => (
+              <motion.article
+                key={item.name}
+                className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm"
+                variants={sectionItem}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <p className="text-rantau-gold">★★★★★</p>
+                <p className="mt-3 text-neutral-400">{pick(item.review, lang)}</p>
+                <p className="mt-4 text-sm font-semibold text-[#f5eed8]">{item.name}</p>
+              </motion.article>
+            ))}
+          </div>
+        </Section>
 
         <Section id="faq" kicker={t.sectionKicker} title={t.faqTitle}>
           <div className="space-y-3">
             {faqs.map((faq, index) => (
-              <article key={faq.q.en} className="rounded-xl border border-[#c4a35a]/25 bg-[#1a1816]/70 backdrop-blur-sm">
+              <motion.article
+                key={faq.q.en}
+                className="rounded-xl border border-[#c4a35a]/25 bg-[#1a1816]/70 backdrop-blur-sm"
+                variants={sectionItem}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ delay: index * 0.08 }}
+              >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
@@ -1460,7 +1508,7 @@ function App() {
                 {openFaq === index && (
                   <p className="px-5 pb-4 text-sm text-neutral-400">{pick(faq.a, lang)}</p>
                 )}
-              </article>
+              </motion.article>
             ))}
           </div>
         </Section>
