@@ -63,3 +63,10 @@ body {
 .hover\:bg-rantau-gold:hover {
   background-color: var(--rantau-gold);
 }
+
+/* Hide volume controls on gallery videos — always muted */
+.video-no-volume::-webkit-media-controls-mute-button,
+.video-no-volume::-webkit-media-controls-volume-slider,
+.video-no-volume::-webkit-media-controls-volume-control-container {
+  display: none !important;
+}

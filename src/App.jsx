@@ -4,15 +4,19 @@ import { BrandBackground } from './components/BrandBackground'
 import logoRantau from './assets/logo-rantau.png'
 import chefHaziq from './assets/haziq.PNG'
 import dessert1 from './assets/dessert-1.PNG'
-import dessert3 from './assets/dessert-3.PNG'
+import dessert3 from './assets/dessert-3.jpg'
 import dessert2 from './assets/dessert-2.PNG'
 import dessert4 from './assets/dessert-4.PNG'
 
+const BACKGROUND_MUSIC = '/song/Instrumental Music.m4a'
+
+function pick(copy, lang) {
+  return copy[lang] ?? copy.en
+}
 
 const navItems = [
   { id: 'about', en: 'About', ms: 'Tentang' },
   { id: 'services', en: 'Services', ms: 'Perkhidmatan' },
-  { id: 'menu', en: 'Menu', ms: 'Menu' },
   { id: 'testimonials', en: 'Testimonials', ms: 'Testimoni' },
   { id: 'gallery', en: 'Gallery', ms: 'Galeri' },
   { id: 'faq', en: 'FAQ', ms: 'Soalan Lazim' },
@@ -20,41 +24,72 @@ const navItems = [
 ]
 
 const rantauDifferentiators = [
-  'Private dining',
-  'Modern Malaysian cuisine',
-  'Signature mocktail pairing',
-  'Personal chef experience',
-  'Halal dining experience',
-  'Fresh ingredients',
+  { en: 'Private dining', ms: 'Makan malam peribadi' },
+  { en: 'Modern Malaysian cuisine', ms: 'Masakan Malaysia moden' },
+  { en: 'Signature mocktail pairing', ms: 'Pasangan mocktail signature' },
+  { en: 'Personal chef experience', ms: 'Pengalaman chef peribadi' },
+  { en: 'Fresh ingredients', ms: 'Bahan-bahan segar' },
+  { en: 'Perfect for special occasions', ms: 'Sesuai untuk acara khas' },
 ]
 
 const experienceTimeline = [
-  'Booking',
-  'Menu discussion',
-  'Confirmation',
-  'Chef arrives',
-  'Private dining experience',
-  'Cleanup',
+  { en: 'Booking', ms: 'Tempahan' },
+  { en: 'Menu discussion', ms: 'Perbincangan menu' },
+  { en: 'Confirmation', ms: 'Pengesahan' },
+  { en: 'Chef arrives', ms: 'Chef tiba' },
+  { en: 'Private dining experience', ms: 'Pengalaman makan malam peribadi' },
+  { en: 'Cleanup', ms: 'Pembersihan' },
 ]
 
 const bookingProcess = [
-  'Choose your preferred date',
-  'Submit your enquiry',
-  'Consultation',
-  '50% deposit',
-  'Booking confirmed',
+  { en: 'Choose your preferred date', ms: 'Pilih tarikh pilihan anda' },
+  { en: 'Submit your enquiry', ms: 'Hantar pertanyaan anda' },
+  { en: 'Consultation', ms: 'Perundingan' },
+  { en: '50% deposit', ms: 'Deposit 50%' },
+  { en: 'Booking confirmed', ms: 'Tempahan disahkan' },
 ]
 
 const termsContent = {
   reservation: [
-    '50% deposit required',
-    'Reservation confirmed only after deposit received',
+    {
+      en: '50% deposit required',
+      ms: 'Deposit 50% diperlukan',
+    },
+    {
+      en: 'Reservation confirmed only after deposit received',
+      ms: 'Tempahan disahkan hanya selepas deposit diterima',
+    },
   ],
   cancellation: [
-    'Deposit is non-refundable',
-    'One date reschedule allowed with minimum 7 days notice',
+    {
+      en: 'Deposit is non-refundable',
+      ms: 'Deposit tidak boleh dikembalikan',
+    },
+    {
+      en: 'One date reschedule allowed with minimum 7 days notice',
+      ms: 'Satu pertukaran tarikh dibenarkan dengan notis minimum 7 hari',
+    },
   ],
 }
+
+const reservationPolicies = [
+  {
+    en: 'Maximum capacity: up to 5 guests per dining experience.',
+    ms: 'Kapasiti maksimum: sehingga 5 tetamu setiap pengalaman makan.',
+  },
+  {
+    en: 'Minimum booking: 14 days before the event.',
+    ms: 'Tempahan minimum: 14 hari sebelum acara.',
+  },
+  {
+    en: 'Last-minute booking: 7–13 days before the event, subject to availability.',
+    ms: 'Tempahan saat akhir: 7–13 hari sebelum acara, tertakuk kepada ketersediaan.',
+  },
+  {
+    en: 'Bookings less than 7 days before the event are not accepted.',
+    ms: 'Tempahan kurang daripada 7 hari sebelum acara tidak diterima.',
+  },
+]
 
 // const pricingItems = [
 //   'RM265 per guest — available for reservations of 4–5 guests.',
@@ -64,10 +99,22 @@ const termsContent = {
 // ]
 
 const galleryImages = [
-  { src: dessert1, alt: 'Rantau dessert course' },
-  { src: dessert3, alt: 'Rantau plated dessert' },
-  { src: dessert2, alt: 'Rantau dessert presentation' },
-  { src: dessert4, alt: 'Rantau dessert detail' },
+  {
+    src: dessert1,
+    alt: { en: 'Rantau dessert course', ms: 'Hidangan pencuci mulut Rantau' },
+  },
+  {
+    src: dessert3,
+    alt: { en: 'Rantau plated dessert', ms: 'Pencuci mulut Rantau dihidang' },
+  },
+  {
+    src: dessert2,
+    alt: { en: 'Rantau dessert presentation', ms: 'Persembahan pencuci mulut Rantau' },
+  },
+  {
+    src: dessert4,
+    alt: { en: 'Rantau dessert detail', ms: 'Perincian pencuci mulut Rantau' },
+  },
 ]
 
 const clientVideos = [
@@ -93,98 +140,9 @@ const clientVideos = [
   },
 ]
 
-/** Malaysian-style menu — copy switches with EN / BM toggle */
-const dishes = [
-  {
-    category: { en: 'Heritage rice & sambal', ms: 'Nasi warisan & sambal' },
-    name: {
-      en: 'Nasi Lemak Ayam Berempah',
-      ms: 'Nasi Lemak Ayam Berempah',
-    },
-    image:
-      'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=80',
-    price: 'RM 38',
-    description: {
-      en: 'Coconut rice, house sambal tumis, ikan bilis & peanuts, cucumber, telur goreng, and spiced fried chicken.',
-      ms: 'Nasi lemak, sambal tumis buatan sendiri, ikan bilis & kacang, timun, telur goreng, dan ayam goreng berempah.',
-    },
-  },
-  {
-    category: { en: 'Slow-cooked classics', ms: 'Klasik dimasak perlahan' },
-    name: {
-      en: 'Rendang Daging Lembu',
-      ms: 'Rendang Daging Lembu',
-    },
-    image:
-      'https://images.unsplash.com/photo-1565557623262-b40e9eC5970b?auto=format&fit=crop&w=900&q=80',
-    price: 'RM 48',
-    description: {
-      en: 'Dry-style beef rendang with kerisik, coconut cream reduction, and aromatic Malay spices — served with ketupat or nasi minyak.',
-      ms: 'Rendang daging kering dengan kerisik, pekat santan, dan rempah ratus — dihidang dengan ketupat atau nasi minyak.',
-    },
-  },
-  {
-    category: { en: 'From the grill', ms: 'Dari pembakar' },
-    name: {
-      en: 'Satay Ayam & Daging',
-      ms: 'Satay Ayam & Daging',
-    },
-    image:
-      'https://images.unsplash.com/photo-1529566652340-2c41cd1e6596?auto=format&fit=crop&w=900&q=80',
-    price: 'RM 42',
-    description: {
-      en: 'Charcoal-grilled skewers, kuah kacang, nasi impit, cucumber-onion acar — a mamak-night favourite, elevated.',
-      ms: 'Satay dibakar arang, kuah kacang, nasi impit, acar timun-bawang — rasa mamak, diperhalusi.',
-    },
-  },
-  {
-    category: { en: 'Noodle bowls', ms: 'Mangkuk mi' },
-    name: {
-      en: 'Laksa Lemak (Curry Laksa)',
-      ms: 'Laksa Lemak',
-    },
-    image:
-      'https://images.unsplash.com/photo-1617093727343-374928b6facd?auto=format&fit=crop&w=900&q=80',
-    price: 'RM 44',
-    description: {
-      en: 'Coconut curry broth, prawns, tofu pok, beansprouts, and egg — fragrant laksa leaves and lime on the side.',
-      ms: 'Kuah kari santan, udang, tauhu pok, taugeh, dan telur — daun kesum dan limau nipis di tepi.',
-    },
-  },
-  {
-    category: { en: 'Salads & kerabu', ms: 'Kerabu' },
-    name: {
-      en: 'Kerabu Pucuk Paku & Udang',
-      ms: 'Kerabu Pucuk Paku & Udang',
-    },
-    image:
-      'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=900&q=80',
-    price: 'RM 32',
-    description: {
-      en: 'Blanched fiddlehead fern, grilled prawns, toasted coconut kerisik, and a bright limau nipis dressing.',
-      ms: 'Pucuk paku celur, udang bakar, kerisik sangai, dan air limau nipis yang segar.',
-    },
-  },
-  {
-    category: { en: 'Sweet traditions', ms: 'Manisan tradisional' },
-    name: {
-      en: 'Sago Gula Melaka',
-      ms: 'Sago Gula Melaka',
-    },
-    image:
-      'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80',
-    price: 'RM 22',
-    description: {
-      en: 'Chilled pearl sago, gula Melaka syrup, and salted coconut cream — a gentle Malaysian dessert.',
-      ms: 'Sago mutiara sejuk, sirap gula Melaka, dan santan masin — pencuci mulut lembut.',
-    },
-  },
-]
-
 const heroCopy = {
-  kicker: { en: 'A journey of Malaysian flavours.', ms: 'Satu perjalanan cita rasa Malaysia.' },
   title: {
-    en: 'A journey of Malaysian flavours.',
+    en: 'A journey of malay flavours.',
     ms: 'Satu perjalanan cita rasa Malaysia.',
   },
   sub: {
@@ -196,7 +154,7 @@ const heroCopy = {
 const heroSlideImages = [
   'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=80',
   'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1800&q=80',
-  'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=1800&q=80',
+  '/dessert-3.PNG',
   'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=80',
 ]
 
@@ -220,14 +178,11 @@ const uiCopy = {
     heroTitle: 'Private Dining, Crafted With Heritage & Heart',
     heroSub:
       'Rantau by Chef Haziq brings refined Malay cuisine to your table — bespoke menus, elegant plating, and intimate dining for homes, celebrations, and executive gatherings.',
-    viewMenu: 'View Menu',
+    viewMenu: 'View Gallery',
     bookNow: 'Book Now',
     heroCta: 'Ready to experience Malaysian fine dining like never before?',
-    menuTitle: 'Malaysian-inspired menu',
-    menuSub:
-      'Heritage flavours, halal-friendly options on request, and premium plating — swap dishes anytime for your event.',
     sectionKicker: 'Rantau',
-    contactTitle: 'Make a Reservation',
+    contactTitle: 'Ready to experience Malay private dining like never before.',
     contactSub:
       'Fill in the details below — your enquiry will be sent to us via WhatsApp, ready for Chef Haziq to review.',
     formName: 'Name',
@@ -249,6 +204,50 @@ const uiCopy = {
     videoPrev: 'Previous video',
     videoNext: 'Next video',
     scrollToTop: 'Scroll to top',
+    pauseMusic: 'Pause music',
+    playMusic: 'Play music',
+    loading: 'Loading…',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    whatsappFloat: 'WhatsApp',
+    footerRights: 'All rights reserved.',
+    directContact: 'Direct Contact',
+    reservationPolicyTitle: 'Reservation Policy',
+    aboutTitle: 'About Chef',
+    aboutMeetChef: 'Meet Chef Haziq',
+    aboutP1:
+      'Chef Haziq began his culinary journey in some of Malaysia’s most demanding professional kitchens, including luxury five-star hotels and a Michelin restaurant. These experiences shaped his discipline, attention to detail, and appreciation for refined dining.',
+    aboutP2:
+      'Driven by a passion for Malaysian cuisine, he founded RANTAU to present familiar local flavours through a contemporary lens. Each menu is carefully curated to honour tradition while embracing modern techniques, allowing every guest to experience Malaysia in a new and memorable way.',
+    aboutP3:
+      'Every dinner is personally planned, prepared, and presented by Chef Haziq, ensuring an intimate dining experience where every course reflects craftsmanship, hospitality, and the rich diversity of Malaysian flavours.',
+    cuisineFocusLabel: 'Cuisine Focus',
+    cuisineFocusValue: 'Malaysian Contemporary Cuisine',
+    servicesTitle: 'What Makes Rantau Different',
+    timelineTitle: 'The Timeline',
+    bookingTitle: 'Booking Process',
+    termsTitle: 'Terms & Conditions',
+    termsReservation: 'Reservation',
+    termsCancellation: 'Cancellation',
+    testimonialsTitle: 'Trusted by Premium Clients',
+    galleryTitle: 'Gallery',
+    experienceMenuTitle: 'The RANTAU Experience ⭐',
+    experienceMenuText:
+      'A thoughtfully curated tasting menu that showcases Chef Haziq’s interpretation of Malaysian flavours. For the best dining experience, we highly recommend this menu.',
+    customExperienceTitle: 'Custom Experience',
+    customExperienceText:
+      'Looking for something more personal? We can tailor the menu to suit your preferences and dietary requirements with prior discussion.',
+    faqTitle: 'Frequently Asked Questions',
+    formPaxPlaceholder: 'e.g. 8',
+    whatsappPrefill: 'Hi, I would like to enquire about Rantau private dining.',
+    whatsappContact: 'WhatsApp: 017-204 6561',
+    instagramContact: 'Instagram: @rantau.privatedining',
+    tiktokContact: 'TikTok: RANTAU Private Dining',
+    chefPhotoAlt: 'Chef Haziq',
+    logoHeroAlt: 'Rantau by Chef Haziq — A Journey of Malay Flavours, Private Dining',
+    goToSlide: (n) => `Go to slide ${n}`,
+    goToVideo: (n) => `Go to video ${n}`,
+    viewVideo: (title) => `View video: ${title}`,
   },
   ms: {
     bookNav: 'Tempahan',
@@ -256,14 +255,11 @@ const uiCopy = {
     heroTitle: 'Makan Malam Peribadi, Dicipta Dengan Warisan & Kasih',
     heroSub:
       'Rantau by Chef Haziq membawa masakan Melayu yang halus ke meja anda — menu khas, hidangan elegan, dan pengalaman makan malam peribadi untuk rumah, sambutan, dan mesyuarat eksekutif.',
-    viewMenu: 'Lihat Menu',
+    viewMenu: 'Lihat Galeri',
     bookNow: 'Tempah Sekarang',
     heroCta: 'Bersedia untuk merasai hidangan Malaysia moden yang tiada tandingan?',
-    menuTitle: 'Menu ilham Malaysia',
-    menuSub:
-      'Citarasa warisan, pilihan mesra halal atas permintaan, dan hidangan premium — tukar hidangan mengikut acara anda.',
     sectionKicker: 'Rantau',
-    contactTitle: 'Buat Tempahan',
+    contactTitle: 'Bersedia untuk menikmati pengalaman santapan peribadi Melayu yang belum pernah anda rasai sebelum ini.',
     contactSub:
       'Isi butiran di bawah — pertanyaan anda akan dihantar melalui WhatsApp untuk semakan Chef Haziq.',
     formName: 'Nama',
@@ -285,43 +281,111 @@ const uiCopy = {
     videoPrev: 'Video sebelum',
     videoNext: 'Video seterusnya',
     scrollToTop: 'Tatal ke atas',
+    pauseMusic: 'Jeda muzik',
+    playMusic: 'Main muzik',
+    loading: 'Memuatkan…',
+    openMenu: 'Buka menu',
+    closeMenu: 'Tutup menu',
+    whatsappFloat: 'WhatsApp',
+    footerRights: 'Hak cipta terpelihara.',
+    directContact: 'Hubungi Terus',
+    reservationPolicyTitle: 'Polisi Tempahan',
+    aboutTitle: 'Tentang Chef',
+    aboutMeetChef: 'Kenali Chef Haziq',
+    aboutP1:
+      'Chef Haziq memulakan perjalanan kulinari di dapur profesional paling mencabar di Malaysia, termasuk hotel lima bintang mewah dan restoran Michelin. Pengalaman ini membentuk disiplin, perhatian terhadap perincian, dan penghargaan terhadap hidangan yang halus.',
+    aboutP2:
+      'Didorong oleh minat terhadap masakan Malaysia, beliau mengasaskan RANTAU untuk mempersembahkan citarasa tempatan yang familiar melalui sudut moden. Setiap menu disusun dengan teliti untuk menghormati tradisi sambil merangkul teknik moden, membolehkan setiap tetamu merasai Malaysia dengan cara yang baharu dan tidak dapat dilupakan.',
+    aboutP3:
+      'Setiap makan malam dirancang, disediakan, dan dihidang secara peribadi oleh Chef Haziq, memastikan pengalaman makan yang intim di mana setiap hidangan mencerminkan kemahiran, layanan, dan kepelbagaian citarasa Malaysia.',
+    cuisineFocusLabel: 'Fokus Masakan',
+    cuisineFocusValue: 'Masakan Kontemporari Malaysia',
+    servicesTitle: 'Apa Yang Membezakan Rantau',
+    timelineTitle: 'Garis Masa',
+    bookingTitle: 'Proses Tempahan',
+    termsTitle: 'Terma & Syarat',
+    termsReservation: 'Tempahan',
+    termsCancellation: 'Pembatalan',
+    testimonialsTitle: 'Dipercayai oleh Pelanggan Premium',
+    galleryTitle: 'Galeri',
+    experienceMenuTitle: 'Pengalaman RANTAU ⭐',
+    experienceMenuText:
+      'Satu menu sajian rasa yang disusun dengan teliti, menampilkan interpretasi Chef Haziq terhadap cita rasa Malaysia. Kami amat mengesyorkan menu ini untuk pengalaman menjamu selera yang terbaik.',
+    customExperienceTitle: 'Pengalaman Khas',
+    customExperienceText:
+      'Mahukan sesuatu yang lebih peribadi? Kami boleh menyesuaikan menu mengikut pilihan dan keperluan diet anda melalui perbincangan awal.',
+    faqTitle: 'Soalan Lazim',
+    formPaxPlaceholder: 'cth. 8',
+    whatsappPrefill: 'Hai, saya ingin bertanya tentang makan malam peribadi Rantau.',
+    whatsappContact: 'WhatsApp: 017-204 6561',
+    instagramContact: 'Instagram: @rantau.privatedining',
+    tiktokContact: 'TikTok: RANTAU Private Dining',
+    chefPhotoAlt: 'Chef Haziq',
+    logoHeroAlt: 'Rantau by Chef Haziq — Perjalanan Citarasa Melayu, Makan Malam Peribadi',
+    goToSlide: (n) => `Pergi ke slaid ${n}`,
+    goToVideo: (n) => `Pergi ke video ${n}`,
+    viewVideo: (title) => `Lihat video: ${title}`,
   },
 }
 
 const testimonials = [
   {
     name: 'Amina R.',
-    review:
-      'Every dish was artfully plated and deeply flavorful. It felt like a Michelin-level dinner at home.',
+    review: {
+      en: 'Every dish served was a winner and packed with flavor. The vibe was like having a Michelin-standard dinner at home.',
+      ms: 'Setiap hidangan dihidang memang win dan penuh rasa. Vibe dia seperti makan malam bertaraf Michelin di rumah.',
+    },
   },
   {
-    name: 'Harith & Co.',
-    review:
-      'Chef service for our executive dinner was flawless. Seamless setup, outstanding taste, premium hospitality.',
+    name: 'Harith ',
+    review: {
+      en: 'Chef service for our executive dinner was flawless. Seamless setup, outstanding taste, premium hospitality.',
+      ms: 'Perkhidmatan chef untuk makan malam eksekutif kami sangat sempurna. Persediaan lancar, rasa hebat, layanan premium.',
+    },
   },
   {
-    name: 'Nadia K.',
-    review:
-      'From menu customization to final dessert, the experience was intimate, elegant, and unforgettable.',
+    name: 'Nadia ',
+    review: {
+      en: 'From menu customization to final dessert, the experience was intimate, elegant, and unforgettable.',
+      ms: 'Dari penyesuaian menu hingga pencuci mulut terakhir, pengalaman itu intim, elegan, dan tidak dapat dilupakan.',
+    },
   },
 ]
 
 const faqs = [
   {
-    q: 'Do you travel outside KL?',
-    a: 'Complimentary travel within Kuala Lumpur and selected nearby areas in Selangor. A travel fee may apply for locations further from Kuala Lumpur. Please contact us to confirm your location.',
+    q: { en: 'Do you travel outside KL?', ms: 'Adakah anda berkhidmat di luar KL?' },
+    a: {
+      en: 'Complimentary travel within Kuala Lumpur and selected nearby areas in Selangor. We are not cover out of Kuala Lumpur and Selangor. Please contact to confirm your location.',
+      ms: 'Perjalanan percuma dalam Kuala Lumpur dan kawasan terpilih di Selangor. Tidak beroperasi diluar Kuala Lumpur dan Selangor. Sila hubungi kami untuk mengesahkan lokasi anda.',
+    },
   },
   {
-    q: 'Can I request menu changes?',
-    a: 'My signature four-course menu is recommended for the best dining experience. Custom menus are available upon request and will be quoted separately based on your preferences and ingredient selection.',
+    q: { en: 'Can I request menu changes?', ms: 'Bolehkah saya minta perubahan menu?' },
+    a: {
+      en: 'My signature four-course menu is recommended for the best dining experience. Custom menus are available upon request and will be quoted separately based on your preferences and ingredient selection.',
+      ms: 'Menu empat hidangan signature saya disyorkan untuk pengalaman makan terbaik. Menu khas tersedia atas permintaan dan akan disebut harga secara berasingan mengikut pilihan dan bahan anda.',
+    },
   },
   {
-    q: 'How long is the dinner?',
-    a: 'The experience typically lasts around 1.5 hours, depending on the pace of service and your dining preferences. In some cases, it may be completed in about 1 hour if everything runs smoothly.',
+    q: { en: 'How does private dining works?', ms:'Bagaimanakah konsep makan secara peribadi berfungsi?'},
+    a: {
+      en: 'Once your booking is confirmed, I’ll handle everything from ingredient sourcing and preparation to cooking, plating, and kitchen cleanup. I typically arrive at your home around 4–5 hours before the dining experience to prepare everything fresh on-site. All you need to do is relax and enjoy a restaurant-quality dining experience in the comfort of your own home.'},
+      ms: 'Sebaik sahaja tempahan anda disahkan, saya akan menguruskan segala-galanya—daripada mendapatkan dan menyediakan bahan-bahan hinggalah kepada proses memasak, menghidang, serta mengemas dapur. Biasanya, saya akan tiba di kediaman anda kira-kira 4 hingga 5 jam sebelum waktu makan untuk menyediakan segala hidangan secara segar di lokasi. Anda hanya perlu berehat dan menikmati pengalaman menjamu selera bertaraf restoran dalam keselesaan kediaman anda sendiri.'},
+  
+  {
+    q: { en: 'How long is the dinner?', ms: 'Berapa lama tempoh makan malam?' },
+    a: {
+      en: 'The experience typically lasts around 1.5 hours, depending on the pace of service and your dining preferences. In some cases, it may be completed in about 1 hour if everything runs smoothly.',
+      ms: 'Pengalaman ini biasanya mengambil masa kira-kira 1.5 jam, bergantung pada rentak hidangan dan pilihan anda. Dalam sesetengah kes, ia boleh siap dalam kira-kira 1 jam jika semuanya berjalan lancar.',
+    },
   },
   {
-    q: 'What if I have allergies?',
-    a: 'Please let me know in advance, and I’ll do my best to accommodate your dietary requirements or allergies. Minor adjustments are usually included, while more extensive menu changes may require a revised quotation.',
+    q: { en: 'What if I have allergies?', ms: 'Bagaimana jika saya ada alahan?' },
+    a: {
+      en: 'Please let me know in advance, and I’ll do my best to accommodate your dietary requirements or allergies. Minor adjustments are usually included, while more extensive menu changes may require a revised quotation.',
+      ms: 'Sila maklumkan lebih awal, dan saya akan cuba sedaya upaya untuk menyesuaikan keperluan diet atau alahan anda. Pelarasan kecil biasanya disertakan, manakala perubahan menu yang lebih meluas mungkin memerlukan sebut harga baharu.',
+    },
   },
 ]
 
@@ -444,7 +508,7 @@ function ReservationForm({ lang, t }) {
             min={1}
             required
             className={inputClass}
-            placeholder="e.g. 8"
+            placeholder={t.formPaxPlaceholder}
           />
         </label>
 
@@ -495,7 +559,14 @@ function ReservationForm({ lang, t }) {
   )
 }
 
-function VideoPreviewCard({ src, title, onSelect, position }) {
+function enforceVideoMuted(video) {
+  if (!video) return
+  video.muted = true
+  video.defaultMuted = true
+  video.volume = 0
+}
+
+function VideoPreviewCard({ src, title, onSelect, position, loadingLabel, viewVideoLabel }) {
   const videoRef = useRef(null)
   const [thumbnailReady, setThumbnailReady] = useState(false)
 
@@ -519,6 +590,7 @@ function VideoPreviewCard({ src, title, onSelect, position }) {
     video.addEventListener('loadedmetadata', handleLoadedMetadata)
     video.addEventListener('seeked', handleSeeked)
     video.load()
+    enforceVideoMuted(video)
 
     return () => {
       video.removeEventListener('loadedmetadata', handleLoadedMetadata)
@@ -533,22 +605,24 @@ function VideoPreviewCard({ src, title, onSelect, position }) {
       className={`group w-full overflow-hidden rounded-xl border border-[#c4a35a]/20 bg-[#1a1816]/60 text-left backdrop-blur-sm transition hover:border-rantau-gold/50 hover:bg-[#1a1816]/80 ${
         position === 'left' ? 'origin-right' : 'origin-left'
       }`}
-      aria-label={`View video: ${title}`}
+      aria-label={viewVideoLabel(title)}
     >
       <div className="relative h-[160px] w-full overflow-hidden bg-[#0d0c0b] sm:h-[220px] md:h-[300px] lg:h-[360px]">
         <video
           key={src}
           ref={videoRef}
           src={src}
-          className="h-full w-full object-contain opacity-80 transition group-hover:opacity-100"
+          className="video-no-volume h-full w-full object-contain opacity-80 transition group-hover:opacity-100"
           playsInline
           muted
+          defaultMuted
           preload="metadata"
           tabIndex={-1}
+          onVolumeChange={(e) => enforceVideoMuted(e.currentTarget)}
         />
         {!thumbnailReady && (
           <span className="absolute inset-0 flex items-center justify-center text-xs text-neutral-500">
-            Loading…
+            {loadingLabel}
           </span>
         )}
       </div>
@@ -559,7 +633,7 @@ function VideoPreviewCard({ src, title, onSelect, position }) {
   )
 }
 
-function ClientVideo({ src, title, clickLabel, isActive = true }) {
+function ClientVideo({ src, title, clickLabel, isActive = true, loadingLabel }) {
   const videoRef = useRef(null)
   const [playing, setPlaying] = useState(false)
   const [thumbnailReady, setThumbnailReady] = useState(false)
@@ -601,12 +675,28 @@ function ClientVideo({ src, title, clickLabel, isActive = true }) {
     setPlaying(false)
   }, [isActive])
 
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    function keepMuted() {
+      enforceVideoMuted(video)
+    }
+
+    video.addEventListener('volumechange', keepMuted)
+    enforceVideoMuted(video)
+
+    return () => {
+      video.removeEventListener('volumechange', keepMuted)
+    }
+  }, [src, playing])
+
   function handlePlay() {
     const video = videoRef.current
     if (!video) return
 
     setPlaying(true)
-    video.muted = false
+    enforceVideoMuted(video)
     video.currentTime = 0
     requestAnimationFrame(() => {
       video.play()
@@ -618,11 +708,14 @@ function ClientVideo({ src, title, clickLabel, isActive = true }) {
       <div className="relative h-[220px] w-full overflow-hidden bg-[#0d0c0b] sm:h-[300px] md:h-[400px] lg:h-[480px]">
         <video
           ref={videoRef}
-          className="h-full w-full object-contain"
+          className="video-no-volume h-full w-full object-contain"
           controls={playing}
+          controlsList="nodownload noremoteplayback"
           playsInline
           muted
+          defaultMuted
           preload="metadata"
+          onVolumeChange={(e) => enforceVideoMuted(e.currentTarget)}
         >
           <source src={src} type="video/mp4" />
         </video>
@@ -635,7 +728,7 @@ function ClientVideo({ src, title, clickLabel, isActive = true }) {
             aria-label={`${clickLabel}: ${title}`}
           >
             {!thumbnailReady && (
-              <span className="text-xs uppercase tracking-widest text-neutral-400">Loading…</span>
+              <span className="text-xs uppercase tracking-widest text-neutral-400">{loadingLabel}</span>
             )}
             <span className="flex h-16 w-16 items-center justify-center rounded-full bg-rantau-gold/95 text-2xl text-neutral-900 shadow-lg backdrop-blur-sm md:h-20 md:w-20 md:text-3xl">
               ▶
@@ -649,7 +742,7 @@ function ClientVideo({ src, title, clickLabel, isActive = true }) {
   )
 }
 
-function VideoCarousel({ videos, lang, clickLabel, prevLabel, nextLabel }) {
+function VideoCarousel({ videos, lang, clickLabel, prevLabel, nextLabel, loadingLabel, goToVideoLabel, viewVideoLabel }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const touchStartX = useRef(null)
   const count = videos.length
@@ -700,6 +793,8 @@ function VideoCarousel({ videos, lang, clickLabel, prevLabel, nextLabel }) {
             title={prevVideo.title[lang]}
             onSelect={() => goTo(prevIndex)}
             position="left"
+            loadingLabel={loadingLabel}
+            viewVideoLabel={viewVideoLabel}
           />
 
           <div className="z-10 rounded-2xl shadow-[0_8px_32px_rgba(196,163,90,0.12)] ring-2 ring-rantau-gold/35">
@@ -709,6 +804,7 @@ function VideoCarousel({ videos, lang, clickLabel, prevLabel, nextLabel }) {
               title={centerVideo.title[lang]}
               clickLabel={clickLabel}
               isActive
+              loadingLabel={loadingLabel}
             />
           </div>
 
@@ -718,6 +814,8 @@ function VideoCarousel({ videos, lang, clickLabel, prevLabel, nextLabel }) {
             title={nextVideo.title[lang]}
             onSelect={() => goTo(nextIndex)}
             position="right"
+            loadingLabel={loadingLabel}
+            viewVideoLabel={viewVideoLabel}
           />
         </div>
       ) : (
@@ -726,6 +824,7 @@ function VideoCarousel({ videos, lang, clickLabel, prevLabel, nextLabel }) {
           title={centerVideo.title[lang]}
           clickLabel={clickLabel}
           isActive
+          loadingLabel={loadingLabel}
         />
       )}
 
@@ -753,7 +852,7 @@ function VideoCarousel({ videos, lang, clickLabel, prevLabel, nextLabel }) {
               <button
                 key={video.src}
                 type="button"
-                aria-label={`Go to video ${index + 1}`}
+                aria-label={goToVideoLabel(index + 1)}
                 aria-current={activeIndex === index ? 'true' : undefined}
                 onClick={() => goTo(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
@@ -768,28 +867,28 @@ function VideoCarousel({ videos, lang, clickLabel, prevLabel, nextLabel }) {
   )
 }
 
-function BulletList({ items }) {
+function BulletList({ items, lang }) {
   return (
     <ul className="space-y-3">
-      {items.map((item) => (
-        <li key={item} className="flex gap-3 text-neutral-400">
+      {items.map((item, index) => (
+        <li key={index} className="flex gap-3 text-neutral-400">
           <span className="mt-0.5 shrink-0 text-rantau-gold">—</span>
-          <span>{item}</span>
+          <span>{pick(item, lang)}</span>
         </li>
       ))}
     </ul>
   )
 }
 
-function StepList({ items }) {
+function StepList({ items, lang }) {
   return (
     <ol className="space-y-4">
       {items.map((item, index) => (
-        <li key={item} className="flex gap-4">
+        <li key={index} className="flex gap-4">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#c4a35a]/40 bg-[#1a1816]/80 text-sm font-semibold text-rantau-gold">
             {index + 1}
           </span>
-          <span className="pt-1 text-neutral-400">{item}</span>
+          <span className="pt-1 text-neutral-400">{pick(item, lang)}</span>
         </li>
       ))}
     </ol>
@@ -860,17 +959,14 @@ function HeroSection({ lang, t }) {
         >
           <img
             src={logoRantau}
-            alt="Rantau by Chef Haziq — A Journey of Malay Flavours, Private Dining"
+            alt={t.logoHeroAlt}
             className="mx-auto w-[min(88vw,340px)] drop-shadow-[0_8px_32px_rgba(196,163,90,0.25)] md:w-[380px]"
           />
         </motion.div>
 
         <div className="max-w-xl text-center md:text-left">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.33em] text-[#e8d4a8]">
-              {heroCopy.kicker[lang]}
-            </p>
-            <h1 className="font-brand mt-4 text-4xl font-semibold leading-tight text-white md:text-5xl">
+            <h1 className="font-brand text-4xl font-semibold leading-tight text-white md:text-5xl">
               {heroCopy.title[lang]}
             </h1>
             <p className="mt-6 text-base text-white/80 md:text-lg">{heroCopy.sub[lang]}</p>
@@ -880,7 +976,7 @@ function HeroSection({ lang, t }) {
 
           <div className="mt-5 flex flex-wrap justify-center gap-4 md:justify-start">
             <a
-              href="#menu"
+              href="#gallery"
               className="rounded-full bg-rantau-gold px-6 py-3 font-medium text-neutral-900 transition hover:scale-105 hover:bg-[#e8d4a8]"
             >
               {t.viewMenu}
@@ -898,7 +994,7 @@ function HeroSection({ lang, t }) {
               <button
                 key={index}
                 type="button"
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={t.goToSlide(index + 1)}
                 aria-current={activeSlide === index ? 'true' : undefined}
                 onClick={() => setActiveSlide(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
@@ -957,6 +1053,102 @@ function LanguageToggle({ lang, onChange, dark = false }) {
         BM
       </button>
     </div>
+  )
+}
+
+function BackgroundMusic({ pauseLabel, playLabel }) {
+  const audioRef = useRef(null)
+  const startedRef = useRef(false)
+  const userPausedRef = useRef(false)
+  const [playing, setPlaying] = useState(false)
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return undefined
+
+    audio.volume = 0.45
+    audio.loop = true
+
+    function removeListeners() {
+      document.removeEventListener('click', tryPlay)
+      document.removeEventListener('touchstart', tryPlay)
+      document.removeEventListener('keydown', tryPlay)
+    }
+
+    async function tryPlay() {
+      if (startedRef.current || userPausedRef.current) return
+
+      try {
+        await audio.play()
+        startedRef.current = true
+        removeListeners()
+      } catch {
+        // Autoplay blocked — retry on first user interaction
+      }
+    }
+
+    function handlePlay() {
+      setPlaying(true)
+    }
+
+    function handlePause() {
+      setPlaying(false)
+    }
+
+    audio.addEventListener('play', handlePlay)
+    audio.addEventListener('pause', handlePause)
+
+    tryPlay()
+    document.addEventListener('click', tryPlay)
+    document.addEventListener('touchstart', tryPlay)
+    document.addEventListener('keydown', tryPlay)
+
+    return () => {
+      removeListeners()
+      audio.removeEventListener('play', handlePlay)
+      audio.removeEventListener('pause', handlePause)
+      audio.pause()
+    }
+  }, [])
+
+  async function toggleMusic() {
+    const audio = audioRef.current
+    if (!audio) return
+
+    if (audio.paused) {
+      userPausedRef.current = false
+      try {
+        await audio.play()
+        startedRef.current = true
+      } catch {
+        // Playback blocked
+      }
+    } else {
+      userPausedRef.current = true
+      audio.pause()
+    }
+  }
+
+  return (
+    <>
+      <audio ref={audioRef} src={BACKGROUND_MUSIC} preload="auto" aria-hidden="true" />
+      <button
+        type="button"
+        onClick={toggleMusic}
+        aria-label={playing ? pauseLabel : playLabel}
+        className="fixed bottom-20 left-5 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-[#c4a35a]/50 bg-[#121110]/90 text-[#e8d4a8] shadow-lg backdrop-blur-sm transition hover:border-rantau-gold hover:bg-[#121110] hover:text-rantau-gold"
+      >
+        {playing ? (
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" />
+          </svg>
+        ) : (
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7L8 5z" />
+          </svg>
+        )}
+      </button>
+    </>
   )
 }
 
@@ -1022,6 +1214,7 @@ function App() {
 
   return (
     <BrandBackground className="min-h-screen text-neutral-300">
+      <BackgroundMusic pauseLabel={t.pauseMusic} playLabel={t.playMusic} />
       <header className="sticky top-0 z-40 border-b border-[#c4a35a]/20 bg-[#121110]/80 backdrop-blur-md">
         <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3 md:px-8">
           <a href="#hero" className="flex shrink-0 items-center gap-3">
@@ -1050,7 +1243,7 @@ function App() {
               onClick={() => setMobileMenuOpen((open) => !open)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav"
-              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-label={mobileMenuOpen ? t.closeMenu : t.openMenu}
             >
               {mobileMenuOpen ? (
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -1100,128 +1293,121 @@ function App() {
         <Section
           id="about"
           kicker={t.sectionKicker}
-          title="About Chef "
+          title={t.aboutTitle}
         >
           <div className="grid items-start gap-8 md:grid-cols-[2fr_3fr] md:items-center md:gap-10">
             <div className="w-full overflow-hidden rounded-3xl border border-[#c4a35a]/20 shadow-[0_8px_32px_rgba(0,0,0,0.35)]">
               <img
                 src={chefHaziq}
-                alt="Chef Haziq"
+                alt={t.chefPhotoAlt}
                 className="block h-auto w-full object-contain object-top"
               />
             </div>
             <div className="flex w-full flex-col justify-center space-y-6 text-neutral-400">
 
             <h2 className="text-rantau-gold text-2xl font-semibold">
-              Meet Chef Haziq
+              {t.aboutMeetChef}
               </h2>
               <p className="text-justify leading-relaxed">
-              Chef Haziq began his culinary journey in some of Malaysia’s most demanding professional kitchens, 
-              including luxury five-star hotels and a Michelin restaurant. These experiences shaped his discipline, 
-              attention to detail, and appreciation for refined dining.
+              {t.aboutP1}
               </p>
               <p className="text-justify leading-relaxed">
-                Driven by a passion for Malaysian cuisine, he founded RANTAU 
-                to present familiar local flavours through a contemporary lens. Each menu is carefully curated to honour 
-                tradition while embracing modern techniques, allowing every guest to experience Malaysia in a new and 
-                memorable way.  
+                {t.aboutP2}
                 </p>
                 <p className="text-justify leading-relaxed">
-                Every dinner is personally planned, prepared, and presented by Chef Haziq, ensuring an intimate dining 
-                experience where every course reflects craftsmanship, hospitality, and the rich diversity of Malaysian 
-                flavours.  
+                {t.aboutP3}
                 </p>
 
               <div className="grid grid-cols-2 gap-4">
                
                 <div className="rounded-xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-4 backdrop-blur-sm">
-                  <p className="text-sm text-neutral-500">Cuisine Focus</p>
-                  <p className="text-xl font-semibold text-[#f5eed8]">Malaysian Contemporary Cuisine</p>
+                  <p className="text-sm text-neutral-500">{t.cuisineFocusLabel}</p>
+                  <p className="text-xl font-semibold text-[#f5eed8]">{t.cuisineFocusValue}</p>
                 </div>
               </div>
             </div>
           </div>
         </Section>
 
-        <Section id="services" kicker={t.sectionKicker} title="What Makes Rantau Different">
+        <Section id="services" kicker={t.sectionKicker} title={t.servicesTitle}>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {rantauDifferentiators.map((item) => (
               <motion.article
-                key={item}
+                key={item.en}
                 className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-5 backdrop-blur-sm transition hover:border-rantau-gold"
                 whileHover={{ y: -2 }}
               >
                 <div className="flex items-start gap-3">
                   <span className="text-rantau-gold">—</span>
-                  <h3 className="text-lg font-semibold text-[#f5eed8]">{item}</h3>
+                  <h3 className="text-lg font-semibold text-[#f5eed8]">{pick(item, lang)}</h3>
                 </div>
               </motion.article>
             ))}
           </div>
         </Section>
 
-        <Section id="timeline" kicker={t.sectionKicker} title="The Timeline">
+        <Section id="timeline" kicker={t.sectionKicker} title={t.timelineTitle}>
           <div className="max-w-xl">
-            <StepList items={experienceTimeline} />
+            <StepList items={experienceTimeline} lang={lang} />
           </div>
         </Section>
 
-        <Section id="booking" kicker={t.sectionKicker} title="Booking Process">
+        <Section id="booking" kicker={t.sectionKicker} title={t.bookingTitle}>
           <div className="max-w-xl">
-            <StepList items={bookingProcess} />
+            <StepList items={bookingProcess} lang={lang} />
           </div>
         </Section>
 
-        <Section id="terms" kicker={t.sectionKicker} title="Terms & Conditions">
+        <Section id="terms" kicker={t.sectionKicker} title={t.termsTitle}>
           <div className="grid gap-6 md:grid-cols-2">
             <article className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm">
-              <h3 className="text-xl font-semibold text-[#f5eed8]">Reservation</h3>
+              <h3 className="text-xl font-semibold text-[#f5eed8]">{t.termsReservation}</h3>
               <div className="mt-4">
-                <BulletList items={termsContent.reservation} />
+                <BulletList items={termsContent.reservation} lang={lang} />
               </div>
             </article>
             <article className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm">
-              <h3 className="text-xl font-semibold text-[#f5eed8]">Cancellation</h3>
+              <h3 className="text-xl font-semibold text-[#f5eed8]">{t.termsCancellation}</h3>
               <div className="mt-4">
-                <BulletList items={termsContent.cancellation} />
+                <BulletList items={termsContent.cancellation} lang={lang} />
               </div>
             </article>
           </div>
         </Section>
 
-        <Section id="menu" kicker={t.sectionKicker} title={t.menuTitle} subtitle={t.menuSub}>
-          <p className="mb-8 max-w-2xl text-sm text-neutral-500">
-            {lang === 'en'
-              ? 'Prices shown as a sample guide — final quotation follows your headcount and menu.'
-              : 'Harga sebagai panduan — sebut harga akhir mengikut bilangan tetamu dan menu.'}
-          </p>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {dishes.map((dish) => (
-              <article
-                key={dish.name.en}
-                className="overflow-hidden rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 backdrop-blur-sm"
-              >
-                <div className="overflow-hidden">
-                  <img
-                    src={dish.image}
-                    alt={dish.name[lang]}
-                    className="h-56 w-full object-cover transition duration-500 hover:scale-110"
-                  />
-                </div>
-                <div className="space-y-2 p-5">
-                  <p className="text-xs uppercase tracking-[0.2em] text-rantau-gold">
-                    {dish.category[lang]}
-                  </p>
-                  <h3 className="text-xl font-semibold text-[#f5eed8]">{dish.name[lang]}</h3>
-                  <p className="text-sm text-neutral-400">{dish.description[lang]}</p>
-                  <p className="pt-1 text-base font-semibold text-rantau-gold">{dish.price}</p>
-                </div>
-              </article>
+        <Section id="gallery" kicker={t.sectionKicker} title={t.galleryTitle}>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {galleryImages.map((image) => (
+              <div key={image.alt.en} className="overflow-hidden rounded-xl border border-[#c4a35a]/20">
+                <img
+                  src={image.src}
+                  alt={pick(image.alt, lang)}
+                  className="h-56 w-full object-cover transition duration-500 hover:scale-110 md:h-72"
+                />
+              </div>
             ))}
           </div>
-        </Section>
 
-        <Section id="testimonials" kicker={t.sectionKicker} title="Trusted by Premium Clients">
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <article className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm md:p-8">
+              <h3 className="font-brand text-2xl font-semibold text-[#f5eed8] md:text-3xl">
+                {t.experienceMenuTitle}
+              </h3>
+              <p className="mt-4 text-justify leading-relaxed text-neutral-400">
+                {t.experienceMenuText}
+              </p>
+            </article>
+
+            <article className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm md:p-8">
+              <h3 className="font-brand text-2xl font-semibold text-[#f5eed8] md:text-3xl">
+                {t.customExperienceTitle}
+              </h3>
+              <p className="mt-4 text-justify leading-relaxed text-neutral-400">
+                {t.customExperienceText}
+              </p>
+            </article>
+          </div>
+          <Section id="testimonials" kicker={t.sectionKicker} title={t.testimonialsTitle}>
           <div className="mb-8 flex flex-wrap gap-3 text-sm text-neutral-500">
             {['Aurelia Hotels', 'Nexa Group', 'The Ashford Family Office', 'Lumiere Events'].map(
               (client) => (
@@ -1235,15 +1421,14 @@ function App() {
             {testimonials.map((item) => (
               <article key={item.name} className="rounded-2xl border border-[#c4a35a]/25 bg-[#1a1816]/70 p-6 backdrop-blur-sm">
                 <p className="text-rantau-gold">★★★★★</p>
-                <p className="mt-3 text-neutral-400">{item.review}</p>
+                <p className="mt-3 text-neutral-400">{pick(item.review, lang)}</p>
                 <p className="mt-4 text-sm font-semibold text-[#f5eed8]">{item.name}</p>
               </article>
             ))}
           </div>
         </Section>
 
-        <Section id="gallery" kicker={t.sectionKicker} title="Gallery">
-          <div className="mb-10">
+          <div className="mt-12">
             <h3 className="text-xl font-semibold text-[#f5eed8]">{t.galleryVideosTitle}</h3>
             <p className="mt-2 max-w-2xl text-sm text-neutral-400">{t.galleryVideosSub}</p>
             <VideoCarousel
@@ -1252,36 +1437,28 @@ function App() {
               clickLabel={t.clickToPlay}
               prevLabel={t.videoPrev}
               nextLabel={t.videoNext}
+              loadingLabel={t.loading}
+              goToVideoLabel={t.goToVideo}
+              viewVideoLabel={t.viewVideo}
             />
           </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {galleryImages.map((image) => (
-              <div key={image.alt} className="overflow-hidden rounded-xl border border-[#c4a35a]/20">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="h-56 w-full object-cover transition duration-500 hover:scale-110 md:h-72"
-                />
-              </div>
-            ))}
-          </div>
         </Section>
+        
 
-        <Section id="faq" kicker={t.sectionKicker} title="Frequently Asked Questions">
+        <Section id="faq" kicker={t.sectionKicker} title={t.faqTitle}>
           <div className="space-y-3">
             {faqs.map((faq, index) => (
-              <article key={faq.q} className="rounded-xl border border-[#c4a35a]/25 bg-[#1a1816]/70 backdrop-blur-sm">
+              <article key={faq.q.en} className="rounded-xl border border-[#c4a35a]/25 bg-[#1a1816]/70 backdrop-blur-sm">
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
                   className="flex w-full items-center justify-between px-5 py-4 text-left"
                 >
-                  <span className="font-medium text-[#f5eed8]">{faq.q}</span>
+                  <span className="font-medium text-[#f5eed8]">{pick(faq.q, lang)}</span>
                   <span className="text-rantau-gold">{openFaq === index ? '−' : '+'}</span>
                 </button>
                 {openFaq === index && (
-                  <p className="px-5 pb-4 text-sm text-neutral-400">{faq.a}</p>
+                  <p className="px-5 pb-4 text-sm text-neutral-400">{pick(faq.a, lang)}</p>
                 )}
               </article>
             ))}
@@ -1295,17 +1472,39 @@ function App() {
             </div>
             <div className="space-y-6 lg:col-span-2">
               <div className="rounded-2xl border border-[#c4a35a]/30 bg-[#1a1816]/80 p-6 backdrop-blur-sm">
-                <h3 className="text-xl font-semibold text-[#f5eed8]">Direct Contact</h3>
+                <h3 className="text-xl font-semibold text-[#f5eed8]">{t.reservationPolicyTitle}</h3>
+                <div className="mt-4">
+                  <BulletList items={reservationPolicies} lang={lang} />
+                </div>
+              </div>
+              <div className="rounded-2xl border border-[#c4a35a]/30 bg-[#1a1816]/80 p-6 backdrop-blur-sm">
+                <h3 className="text-xl font-semibold text-[#f5eed8]">{t.directContact}</h3>
                 <div className="mt-4 space-y-2 text-neutral-300">
-                  <p>WhatsApp: 017-204 6561</p>
+                  
+                <a
+                    className="block transition hover:text-[#9a7b3c]"
+                    href={buildWhatsAppUrl(t.whatsappPrefill)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {t.whatsappContact}
+                  </a>
+                  
                   <a
-                    className="block text-rantau-gold transition hover:text-[#9a7b3c]"
+                    className="block transition hover:text-[#9a7b3c]"
                     href="https://www.instagram.com/rantau.privatedining?igsh=NDg5NHZmM2w1enh4&utm_source=qr"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Instagram: @rantau.privatedining
-
+                    {t.instagramContact}
+                  </a>
+                  <a
+                    className="block transition hover:text-[#9a7b3c]"
+                    href="https://www.tiktok.com/@rantau.bychefhaziq?_r=1&_t=ZS-97usG6SXZ2K"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {t.tiktokContact}
                   </a>
                 </div>
               </div>
@@ -1324,12 +1523,12 @@ function App() {
       <ScrollToTopButton label={t.scrollToTop} />
 
       <a
-        href={buildWhatsAppUrl('Hi, I would like to enquire about Rantau private dining.')}
+        href={buildWhatsAppUrl(t.whatsappPrefill)}
         target="_blank"
         rel="noreferrer"
         className="fixed bottom-5 right-5 rounded-full bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-emerald-500"
       >
-        WhatsApp
+        {t.whatsappFloat}
       </a>
 
       <footer className="border-t border-[#c4a35a]/20">
@@ -1337,18 +1536,18 @@ function App() {
           <div className="flex items-center gap-3">
             <img src={logoRantau} alt="" className="h-10 w-10 rounded-sm object-cover opacity-90" aria-hidden="true" />
             <p className="text-sm text-neutral-400">
-              © {new Date().getFullYear()} Rantau by Chef Haziq. All rights reserved.
+              © {new Date().getFullYear()} Rantau by Chef Haziq. {t.footerRights}
             </p>
           </div>
           <div className="flex gap-4 text-sm text-neutral-400">
             <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-rantau-gold">
               Instagram
             </a>
-            <a href={buildWhatsAppUrl('Hi, I would like to enquire about Rantau private dining.')} target="_blank" rel="noreferrer" className="hover:text-rantau-gold">
+            <a href={buildWhatsAppUrl(t.whatsappPrefill)} target="_blank" rel="noreferrer" className="hover:text-rantau-gold">
               WhatsApp
             </a>
             <a href="https://www.tiktok.com/@rantau.bychefhaziq?_r=1&_t=ZS-97usG6SXZ2K" className="hover:text-rantau-gold">
-             Tiktok
+             TikTok
             </a>
           </div>
         </div>
